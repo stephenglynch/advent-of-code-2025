@@ -54,5 +54,5 @@ pub fn run() {
         }
     }
 
-    println!("answer = {}", clock.zero_xs);
+    println!("Day 1 part 2 answer = {}", clock.zero_xs);
 }
