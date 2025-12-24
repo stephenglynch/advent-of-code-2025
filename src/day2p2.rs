@@ -15,7 +15,6 @@ fn count_repeated_patterns(min: u64, max: u64) -> u64 {
             let pattern = pattern_str.parse().unwrap();
             if pattern >= min && pattern <= max {
                 if !unique_patterns.contains(&pattern) {
-                    println!("invalid code found: {}", pattern);
                     unique_patterns.insert(pattern);
                 }
             }
@@ -24,7 +23,6 @@ fn count_repeated_patterns(min: u64, max: u64) -> u64 {
             }
         }
     }
-    println!("{} total invalid codes found", unique_patterns.len());
     unique_patterns.iter().sum()
 }
 
@@ -36,8 +34,6 @@ pub fn run() {
         let start = caps.get(1).unwrap().as_str().parse().unwrap();
         let end = caps.get(2).unwrap().as_str().parse().unwrap();
         let invalid_codes = count_repeated_patterns(start, end);
-        println!("Completed group ({} invalid codes)", invalid_codes);
-        println!();
         answer = answer + invalid_codes;
     }
 
