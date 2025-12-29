@@ -2,7 +2,7 @@ use regex::Regex;
 
 const INPUT: &str = include_str!("../data/day5/input.txt");
 
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
 struct IdRange {
     start: u64,
     end: u64
@@ -53,34 +53,24 @@ fn parse_database(text: &str) -> Vec<IdRange> {
 
 pub fn run() {
     let mut answer = 0;
-    let mut id_ranges: Vec<Option<IdRange>> = parse_database(INPUT).into_iter().map(|x| Some(x)).collect();
+    let mut id_ranges: Vec<IdRange> = parse_database(INPUT).into_iter().collect();
 
-    // We will repeatedly loop and combine ranges until we are left with only
-    // non-overlapping ranges
-    loop {
-        let mut any_combined = false;
-        for i in 0..id_ranges.len() {
-            for j in (i + 1)..id_ranges.len() {
-                if let Some(a) = id_ranges[i] && let Some(b) = id_ranges[j] {
-                    if let Some(combined) = a.combine(b) {
-                        id_ranges[i] = Some(combined);
-                        id_ranges[j] = None;
-                        any_combined = true;
-                    }
-                }
-            }
-        }
-        // Stop looping if we didn't manage to combine any
-        if !any_combined {
-            break;
+    id_ranges.sort();
+    let mut merged = Vec::new();
+    let mut current = id_ranges[0];
+    for range in id_ranges {
+        if let Some(combined) = current.combine(range) {
+            current = combined;
+        } else {
+            merged.push(current);
+            current = range;
         }
     }
+    merged.push(current);
 
     // Count the number of IDs contained in all the non-overlapping ranges
-    for range in id_ranges {
-        if let Some(range) = range {
-            answer += range.end - range.start + 1;
-        }
+    for range in merged  {
+        answer += range.end - range.start + 1;
     }
 
     println!("Day 5 part 2 answer = {}", answer)
