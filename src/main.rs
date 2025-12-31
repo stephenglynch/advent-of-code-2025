@@ -11,6 +11,7 @@ mod day5p1;
 mod day5p2;
 mod day6p1;
 mod day6p2;
+mod day7p1;
 
 fn main() {
     day1p1::run();
@@ -25,4 +26,5 @@ fn main() {
     day5p2::run();
     day6p1::run();
     day6p2::run();
+    day7p1::run();
 }
